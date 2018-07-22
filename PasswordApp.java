@@ -13,11 +13,13 @@ public class PasswordApp {
 	public static void main(String[] args) throws NoNumberException {
 		String filename = "C:\\Users\\jmeye\\eclipse-workspace\\JavaTraining\\src\\oop\\password1.txt";
 		File file = new File(filename);
-		String password = null;
+		String[] passwords = new String[5];
 		
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(file));
-			password = br.readLine();
+			for(int i = 0; i<5; i++) {
+				passwords[i] = br.readLine();
+			}
 		} catch (FileNotFoundException e) {
 			System.out.println("Sorry, file not found :"+filename);
 		} catch (IOException e) {
@@ -25,35 +27,37 @@ public class PasswordApp {
 			System.out.println(e.toString());
 		}
 		
-		try {
-			if(password.matches(".*\\d+.*") == false) {
-				throw new NoNumberException(password);
+		for(String password: passwords) {
+			try {
+				if(password.matches(".*\\d+.*") == false) {
+					throw new NoNumberException(password);
+				}
+				System.out.println(password);
+			} catch (NoNumberException e) {
+				System.out.println(e.toString());
 			}
-			System.out.println(password);
-		} catch (NoNumberException e) {
-			System.out.println(e.toString());
-		}
-		
-		try {
-			if(password.matches(".*[a-zA-Z].*") == false) {
-				throw new NoLetterException(password);
+			
+			try {
+				if(password.matches(".*[a-zA-Z].*") == false) {
+					throw new NoLetterException(password);
+				}
+				System.out.println(password);
+			} catch (NoLetterException e) {
+				System.out.println(e.toString());
 			}
-			System.out.println(password);
-		} catch (NoLetterException e) {
-			System.out.println(e.toString());
-		}
-		
-		Pattern p = Pattern.compile("[^A-Za-z0-9]");
-		Matcher m = p.matcher(password); 
-		boolean b = m.find();
-		
-		try {
-			if(!b) {
-				throw new NoSpecialException(password);
+			
+			Pattern p = Pattern.compile("[^A-Za-z0-9]");
+			Matcher m = p.matcher(password); 
+			boolean b = m.find();
+			
+			try {
+				if(!b) {
+					throw new NoSpecialException(password);
+				}
+				System.out.println(password);
+			} catch (NoSpecialException e) {
+				System.out.println(e.toString());
 			}
-			System.out.println(password);
-		} catch (NoSpecialException e) {
-			System.out.println(e.toString());
 		}
 
 	}
